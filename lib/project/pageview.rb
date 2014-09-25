@@ -2,8 +2,34 @@ module ProMotion
   class PageView < UIPageViewController
     include ScreenModule
 
+    class << self
+      [:scroll_style, :orientation, :direction].each do |attr| 
+        attr_accessor "_#{attr}"
+
+        maps = 
+
+        define_method(attr) do |arg|
+          case attr
+          when :scroll_style
+
+          when :orientation
+
+          when :direction
+
+          end
+        end
+      end
+
+
+
+    end
+
+
+
     def self.new(attrs = {})
-      s = self.alloc.init
+      s = self.alloc
+      s.initWithTransitionStyle(self.class
+
       s.screen_init(attrs)
       s
     end
