@@ -39,14 +39,13 @@ module ProMotion
       @screens[screen_name] = screen
       @indexes[screen.object_id] = index
 
-      screen
+      screen.navigationController || screen
     end
 
     def presentationIndexForPageViewController(pageview)
       return 0 unless pageview.opts[:default_index]
 
       index = pageview.opts[:default_index]
-
       index.kind_of?(Integer) ? index : self.class.indexes.index(index)
     end
   end
