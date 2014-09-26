@@ -64,9 +64,10 @@ module ProMotion
       end
 
       s.opts = opts
-      s.initWithTransitionStyle(opts[:transition], navigationOrientation: opts[:orientation], options:opts[:options])
       s.screen_init(attrs)
-      s.set_screens(s.screen_for_index(opts[:default_index]))
+      s.initWithTransitionStyle(opts[:transition], navigationOrientation: opts[:orientation], options:opts[:options])
+      s.dataSource = s
+      s.delegate = s
 
       s
     end
@@ -76,11 +77,9 @@ module ProMotion
       setViewControllers([screen], direction: opts[:direction], animated: opts[:animated], completion: opts[:completion])
     end
 
-    #def presentationIndexForPageViewController(pageview)
-      #pageview.opts[:default_index] || 0
-    #end
-
-
+    def presentationIndexForPageViewController(pageview)
+      pageview.opts[:default_index] || 0
+    end
 
     def loadView
       self.respond_to?(:load_view) ? self.load_view : super

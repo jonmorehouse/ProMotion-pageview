@@ -2,7 +2,7 @@ class Page < PM::Screen
 
   def on_load(opts = {})
 
-    puts "LOADED"
+    puts title
     view.backgroundColor = UIColor.blueColor
 
   end
