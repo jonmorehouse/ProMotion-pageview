@@ -2,7 +2,7 @@ module ProMotion
   class PageView < UIPageViewController
     include ScreenModule
 
-    attr_accessor :controllers
+    attr_accessor :opts
 
     # NOTE declare settings / defaults for the three settings needed to configure pageview
     @@map = {
@@ -45,7 +45,7 @@ module ProMotion
         end
       end
 
-      [:options, :starting_index].each do |key|
+      @@available_options.each do |key|
         attr_accessor key
 
         define_method(key) do |*args|
@@ -58,24 +58,23 @@ module ProMotion
     def self.new(attrs = {})
       s = self.alloc
 
-      args = [@@map.keys + @@defaults.keys].flatten.inject({}) do |hash, key|
+      opts = [@@map.keys + @@defaults.keys].flatten.inject({}) do |hash, key|
         hash[key] = attrs.delete(key) || self.send(key)
         hash
       end
 
-      s.initWithTransitionStyle(args[:transition], navigationOrientation:
-                                args[:orientation], options: args[:options])
+      s.opts = opts
+      s.initWithTransitionStyle(opts[:transition], navigationOrientation: opts[:orientation], options:opts[:options])
       s.screen_init(attrs)
-      @screens = {
-
-      }
-      s.setViewControllers([screen_for_index()]
+      s.set_screens(s.screen_for_index(opts[:default_index]))
 
       s
     end
 
-    def go_to_index(index, animated = false)
+    def set_screens(screen, opts = {})
 
+      opts = @opts.merge(opts)
+      setViewControllers([screen], direction: opts[:direction], animated: opts[:animated], completion: opts[:completion])
     end
 
     def loadView
