@@ -49,7 +49,7 @@ module ProMotion
         attr_accessor key
 
         define_method(key) do |*args|
-          return send("@#{key}", *args) unless args.empty?
+          return instance_variable_set("@#{key}", args.first) unless args.empty?
           instance_variable_get("@#{key}") || @@defaults[key]
         end
       end
@@ -72,10 +72,15 @@ module ProMotion
     end
 
     def set_screens(screen, opts = {})
-
       opts = @opts.merge(opts)
       setViewControllers([screen], direction: opts[:direction], animated: opts[:animated], completion: opts[:completion])
     end
+
+    #def presentationIndexForPageViewController(pageview)
+      #pageview.opts[:default_index] || 0
+    #end
+
+
 
     def loadView
       self.respond_to?(:load_view) ? self.load_view : super

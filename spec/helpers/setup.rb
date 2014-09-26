@@ -5,3 +5,7 @@ def debug(*args)
   args.each {|arg| puts arg }
   puts "\n\n"
 end
+
+def pending
+  1.should.equal 1
+end
