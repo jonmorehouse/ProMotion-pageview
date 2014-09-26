@@ -3,7 +3,7 @@ module ProMotion
     include ScreenModule
 
     # NOTE declare settings / defaults for the three settings needed to configure pageview
-    @map = {
+    @@map = {
       :transition => {
         :default => UIPageViewControllerTransitionStyleScroll,
         :page_curl => UIPageViewControllerTransitionStylePageCurl,
@@ -23,16 +23,23 @@ module ProMotion
       }
     }
 
-    @map.keys.each do |key|
-      instance_variable_set("@_#{key}", @map[key][:default])
+    class << self
+      @@map.keys.each do |key|
+        attr_accessor key
 
-      class << self
-        puts self.object_id
-      end
+        define_method("set_#{key}") do |arg|
+          value = @@map[key][arg] || arg
+          instance_variable_set("@_#{key}", value)
+        end
 
-      self.define_class_method(key) do |arg|
-        value = @map[key][arg] || arg
-        instance_variable_set("@_#{key}", value)
+        define_method("get_#{key}") do 
+          instance_variable_get("@_#{key}")
+        end
+
+        define_method(key) do |*args|
+          return send("get_#{key}") if args.empty?
+          send("set_#{key}", *args)
+        end
       end
     end
 
