@@ -1,6 +1,7 @@
 module ProMotion
   class PageView < UIPageViewController
     include ScreenModule
+    include PageViewModule
 
     attr_accessor :opts
 
@@ -32,6 +33,7 @@ module ProMotion
 
     class << self
       attr_accessor :indexes
+      attr_accessor :screens
 
       @@map.keys.flatten.each do |key|
         attr_accessor key
@@ -58,11 +60,11 @@ module ProMotion
     end
 
     def self.indexes
-      @indexes ||= {}
+      @indexes ||= []
     end
 
-    def self.show_dots(show = true)
-      return unless show
+    def self.screens
+      @screens ||= {}
     end
 
     def self.new(attrs = {})
@@ -84,6 +86,17 @@ module ProMotion
       s
     end
 
+    def presentationCountForPageViewController(pageview)
+      return 0 unless self.class.show_dots
+      self.class.total_screens || self.class.indexes.length
+    end
+
+    def presentationIndexForPageViewController(pageview)
+      return @indexes[@current_index].object_id if @current_index
+
+      convert_index(@opts[:default_index])
+    end
+
     def go_to_index(index, opts = {})
       set_screens(screen_for_index(index), opts)
     end
@@ -98,11 +111,6 @@ module ProMotion
       opts = @opts.merge(opts)
       setViewControllers([screen], direction: opts[:direction], animated: opts[:animated], completion: opts[:completion])
     end
-
-
-
-
-
 
     def loadView
       self.respond_to?(:load_view) ? self.load_view : super

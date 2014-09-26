@@ -1,6 +1,6 @@
 class StaticPageView < PM::StaticPageView
 
-  default_index :right
+  default_index :left
   show_dots true
   total_screens 5
 

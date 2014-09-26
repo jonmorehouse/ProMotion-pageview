@@ -1,11 +1,6 @@
 module ProMotion
   class StaticPageView < PageView
 
-    class << self
-      attr_accessor :screens
-      attr_accessor :indexes
-    end
-
     def self.method_missing(method_name, obj_or_klass, opts = {})
 
       @screens ||= {}
@@ -40,17 +35,6 @@ module ProMotion
       @indexes[screen.object_id] = index
 
       screen.navigationController || screen
-    end
-
-    def presentationCountForPageViewController(pageview)
-      return 0 unless self.class.show_dots
-      self.class.total_screens || self.class.indexes.length
-    end
-
-    def presentationIndexForPageViewController(pageview)
-      return @indexes[@current_index].object_id if @current_index
-
-      convert_index(@opts[:default_index])
     end
 
   end
