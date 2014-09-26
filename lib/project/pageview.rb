@@ -31,6 +31,8 @@ module ProMotion
     }
 
     class << self
+      attr_accessor :indexes
+
       @@map.keys.flatten.each do |key|
         attr_accessor key
 
@@ -55,11 +57,20 @@ module ProMotion
       end
     end
 
+    def self.indexes
+      @indexes ||= {}
+    end
+
+    def self.show_dots(show = true)
+      return unless show
+    end
+
     def self.new(attrs = {})
       s = self.alloc
 
-      opts = [@@map.keys + @@defaults.keys].flatten.inject({}) do |hash, key|
-        hash[key] = attrs.delete(key) || self.send(key)
+      opts = [@@map.keys + @@available_options].flatten.inject({}) do |hash, key|
+        value = attrs.delete(key) || self.send(key)
+        hash[key] = value unless value.nil?
         hash
       end
 

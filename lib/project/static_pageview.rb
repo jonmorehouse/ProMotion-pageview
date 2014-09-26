@@ -42,16 +42,15 @@ module ProMotion
       screen.navigationController || screen
     end
 
-    def presentationIndexForPageViewController(pageview)
-      puts "HERE"
-      #convert_index(opts[:default_index]) if opts[:show_dots]
-      nil
+    def presentationCountForPageViewController(pageview)
+      return 0 unless self.class.show_dots
+      self.class.total_screens || self.class.indexes.length
     end
 
-    def presentationCountForPageViewController(pageview)
-      puts "HERE"
-      #convert_index(self.class.total_screens)
-      nil
+    def presentationIndexForPageViewController(pageview)
+      return @indexes[@current_index].object_id if @current_index
+
+      convert_index(@opts[:default_index])
     end
 
   end
