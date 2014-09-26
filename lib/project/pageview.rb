@@ -23,6 +23,8 @@ module ProMotion
       }
     }
 
+    @@defaults = {}
+
     class << self
       @@map.keys.flatten.each do |key|
         attr_accessor key
@@ -38,10 +40,13 @@ module ProMotion
         end
       end
 
-      attr_accessor :options
-      def options(*args)
-        return send("@options=", *args) unless args.empty?
-        return @options
+      [:options, :starting_index].each do |key|
+        attr_accessor key
+
+        define_method(key) do |*args|
+          return send("@#{key}", *args) unless args.empty?
+          instance_variable_get("@#{key}") || @@defaults[key]
+        end
       end
     end
 
@@ -49,16 +54,22 @@ module ProMotion
       s = self.alloc
 
       args = [:transition, :options, :orientation, :direction].inject({}) do |hash, key|
-        puts key
         hash[key] = attrs.delete(key) || self.send(key) 
         hash
       end
 
-      s.initWithTransitionStyle(transition, navigationOrientation:
-                                orientation, options: options)
+      s.initWithTransitionStyle(args[:transition], navigationOrientation:
+                                args[:orientation], options: args[:options])
+
+
       s.screen_init(attrs)
       s
     end
+
+
+
+
+
 
     def loadView
       self.respond_to?(:load_view) ? self.load_view : super
