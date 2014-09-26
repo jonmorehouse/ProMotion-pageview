@@ -2,6 +2,8 @@ module ProMotion
   class PageView < UIPageViewController
     include ScreenModule
 
+    attr_accessor :controllers
+
     # NOTE declare settings / defaults for the three settings needed to configure pageview
     @@map = {
       :transition => {
@@ -23,7 +25,10 @@ module ProMotion
       }
     }
 
-    @@defaults = {}
+    @@available_options = [:options, :animated, :completion, :default_index]
+    @@defaults = {
+      :default_index => 0,
+    }
 
     class << self
       @@map.keys.flatten.each do |key|
@@ -53,23 +58,25 @@ module ProMotion
     def self.new(attrs = {})
       s = self.alloc
 
-      args = [:transition, :options, :orientation, :direction].inject({}) do |hash, key|
-        hash[key] = attrs.delete(key) || self.send(key) 
+      args = [@@map.keys + @@defaults.keys].flatten.inject({}) do |hash, key|
+        hash[key] = attrs.delete(key) || self.send(key)
         hash
       end
 
       s.initWithTransitionStyle(args[:transition], navigationOrientation:
                                 args[:orientation], options: args[:options])
-
-
       s.screen_init(attrs)
+      @screens = {
+
+      }
+      s.setViewControllers([screen_for_index()]
+
       s
     end
 
+    def go_to_index(index, animated = false)
 
-
-
-
+    end
 
     def loadView
       self.respond_to?(:load_view) ? self.load_view : super

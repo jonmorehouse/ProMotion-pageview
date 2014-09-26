@@ -1,6 +1,6 @@
 # ProMotion-pageview
 
-TODO: Write a gem description
+A gem for working with static and dynamic pageviews with ProMotion.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+
 
 ## Contributing
 
