@@ -25,7 +25,7 @@ module ProMotion
       }
     }
 
-    @@available_options = [:options, :animated, :completion, :default_index]
+    @@available_options = [:options, :animated, :completion, :default_index, :show_dots, :total_screens]
     @@defaults = {
       :default_index => 0,
     }
@@ -73,10 +73,25 @@ module ProMotion
       s
     end
 
+    def go_to_index(index, opts = {})
+      set_screens(screen_for_index(index), opts)
+    end
+
+    def convert_index(index)
+      return index if index.kind_of?(Integer)
+
+      self.respond_to?(:integer_from_index) ? integer_from_index(index) : self.class.indexes.index(index)
+    end
+
     def set_screens(screen, opts = {})
       opts = @opts.merge(opts)
       setViewControllers([screen], direction: opts[:direction], animated: opts[:animated], completion: opts[:completion])
     end
+
+
+
+
+
 
     def loadView
       self.respond_to?(:load_view) ? self.load_view : super

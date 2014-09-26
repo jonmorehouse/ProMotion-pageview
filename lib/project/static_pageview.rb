@@ -43,10 +43,16 @@ module ProMotion
     end
 
     def presentationIndexForPageViewController(pageview)
-      return 0 unless pageview.opts[:default_index]
-
-      index = pageview.opts[:default_index]
-      index.kind_of?(Integer) ? index : self.class.indexes.index(index)
+      puts "HERE"
+      #convert_index(opts[:default_index]) if opts[:show_dots]
+      nil
     end
+
+    def presentationCountForPageViewController(pageview)
+      puts "HERE"
+      #convert_index(self.class.total_screens)
+      nil
+    end
+
   end
 end
