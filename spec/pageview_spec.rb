@@ -1,20 +1,22 @@
 describe PM::PageView do
 
   before do
-    @obj = PM::PageView.new
+    @klass = DefaultPageView
+    @obj = @klass.new
   end
 
   it "sets reasonable defaults for the dsl" do
+    [:transition, :orientation, :direction].each do |key|
+      @klass.send(key).should.equal @klass.class_variable_get("@@map")[key][:default]
 
-    1.should.equal 1
-
+    end
   end
 
   it "correctly stores values in the dsl format" do
-
-    debug @obj.class.instance_variable_get("@_transition")
-    1.should.equal 1
-
+    [:transition, :orientation, :direction].each do |key|
+      @klass.send(key, key) 
+      @klass.send(key).should.equal key
+    end
   end
 
 

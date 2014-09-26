@@ -24,7 +24,7 @@ module ProMotion
     }
 
     class << self
-      @@map.keys.each do |key|
+      @@map.keys.flatten.each do |key|
         attr_accessor key
 
         define_method("#{key}=") do |arg|
@@ -34,14 +34,28 @@ module ProMotion
 
         define_method("#{key}") do |*args|
           return send("#{key}=", *args) unless args.empty?
-          instance_variable_get("@#{key}")
+          instance_variable_get("@#{key}") || @@map[key][:default]
         end
+      end
+
+      attr_accessor :options
+      def options(*args)
+        return send("@options=", *args) unless args.empty?
+        return @options
       end
     end
 
     def self.new(attrs = {})
       s = self.alloc
 
+      args = [:transition, :options, :orientation, :direction].inject({}) do |hash, key|
+        puts key
+        hash[key] = attrs.delete(key) || self.send(key) 
+        hash
+      end
+
+      s.initWithTransitionStyle(transition, navigationOrientation:
+                                orientation, options: options)
       s.screen_init(attrs)
       s
     end
