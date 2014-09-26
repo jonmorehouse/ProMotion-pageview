@@ -2,33 +2,42 @@ module ProMotion
   class PageView < UIPageViewController
     include ScreenModule
 
-    class << self
-      [:scroll_style, :orientation, :direction].each do |attr| 
-        attr_accessor "_#{attr}"
+    # NOTE declare settings / defaults for the three settings needed to configure pageview
+    @map = {
+      :transition => {
+        :default => UIPageViewControllerTransitionStyleScroll,
+        :page_curl => UIPageViewControllerTransitionStylePageCurl,
+        :page => UIPageViewControllerTransitionStylePageCurl,
+        :scroll => UIPageViewControllerTransitionStyleScroll
+      },
+      :orientation => {
+        :default => UIPageViewControllerNavigationOrientationHorizontal,
+        :horizontal => UIPageViewControllerNavigationOrientationHorizontal,
+        :vertical => UIPageViewControllerNavigationOrientationVertical,
+      },
+      :direction => {
+        :default => UIPageViewControllerNavigationDirectionForward,
+        :forward => UIPageViewControllerNavigationDirectionForward,
+        :backward => UIPageViewControllerNavigationDirectionReverse,
+        :reverse => UIPageViewControllerNavigationDirectionReverse
+      }
+    }
 
-        maps = 
+    @map.keys.each do |key|
+      instance_variable_set("@_#{key}", @map[key][:default])
 
-        define_method(attr) do |arg|
-          case attr
-          when :scroll_style
-
-          when :orientation
-
-          when :direction
-
-          end
-        end
+      class << self
+        puts self.object_id
       end
 
-
-
+      self.define_class_method(key) do |arg|
+        value = @map[key][arg] || arg
+        instance_variable_set("@_#{key}", value)
+      end
     end
-
-
 
     def self.new(attrs = {})
       s = self.alloc
-      s.initWithTransitionStyle(self.class
 
       s.screen_init(attrs)
       s
