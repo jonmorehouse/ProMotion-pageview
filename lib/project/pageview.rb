@@ -27,18 +27,14 @@ module ProMotion
       @@map.keys.each do |key|
         attr_accessor key
 
-        define_method("set_#{key}") do |arg|
+        define_method("#{key}=") do |arg|
           value = @@map[key][arg] || arg
-          instance_variable_set("@_#{key}", value)
+          instance_variable_set("@#{key}", value)
         end
 
-        define_method("get_#{key}") do 
-          instance_variable_get("@_#{key}")
-        end
-
-        define_method(key) do |*args|
-          return send("get_#{key}") if args.empty?
-          send("set_#{key}", *args)
+        define_method("#{key}") do |*args|
+          return send("#{key}=", *args) unless args.empty?
+          instance_variable_get("@#{key}")
         end
       end
     end
