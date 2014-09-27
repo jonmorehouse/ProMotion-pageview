@@ -26,20 +26,20 @@ module ProMotion
       }
     }
 
-    @@available_options = [:options, :animated, :completion, :default_index, :show_dots, :total_screens]
+    @@options = [:options, :animated, :completion, :default_index, :show_dots, :total_screens]
     @@defaults = {
       :default_index => 0,
     }
 
     # NOTE set up class
-    register_options(@@available_options)
-    register_map(@@map)
+    register_options
+    register_map
     register_store
 
     def self.new(attrs = {})
       s = self.alloc
 
-      opts = [@@map.keys + @@available_options].flatten.inject({}) do |hash, key|
+      opts = [@@map.keys + @@options].flatten.inject({}) do |hash, key|
         value = attrs.delete(key) || self.send(key)
         hash[key] = value unless value.nil?
         hash
@@ -55,7 +55,6 @@ module ProMotion
       s
     end
 
-    # NOTE intiialize promotion screen methods
     def loadView
       self.respond_to?(:load_view) ? self.load_view : super
     end

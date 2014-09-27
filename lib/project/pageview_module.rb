@@ -12,9 +12,9 @@ module ProMotion
         class << self; self; end
       end
 
-
       # NOTE register the map based variables and their setter/getters
-      def register_map(map)
+      def register_map(map = nil)
+        map ||= self.class_variable_get("@@map")
         eigenclass.class_eval do
           map.keys.each do |key|
             attr_accessor key
@@ -32,7 +32,8 @@ module ProMotion
         end
       end
 
-      def register_options(options)
+      def register_options(options = nil)
+        options ||= self.class_variable_get("@@options")
         eigenclass.class_eval do
           options.each do |key|
             attr_accessor key
@@ -82,10 +83,7 @@ module ProMotion
         setViewControllers([screen], direction: opts[:direction], animated: opts[:animated], completion: opts[:completion])
       end
 
-
-
-      end
-
+    end
   end
 end
 
