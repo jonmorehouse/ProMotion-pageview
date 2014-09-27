@@ -28,8 +28,8 @@ Screens can be added through the class DSL. ProMotionPageView inflects the page 
 class TutorialScreen < PM::StaticPageView
    
   intro_screen PM::Screen.new title: :home, nav_bar: true
-  tutorial_1_screen PM::Screen, title: :tutorial_1, nav_bar: true
-  tutorial_2_screen PM::Screen, nav_bar: false
+  tutorial_1_screen PM::Screen, {title: :tutorial_1, nav_bar: true}
+  tutorial_2_screen PM::Screen, {nav_bar: false}
 
   def on_load
 
