@@ -31,8 +31,8 @@ module ProMotion
         end
       end
 
-      def register_options(options = nil)
-        options ||= self.class_variable_get("@@options")
+      def register_options(*options)
+        options = options.empty? ? self.class_variable_get("@@options") : options
         eigenclass.class_eval do
           options.each do |key|
             attr_accessor key
@@ -76,14 +76,10 @@ module ProMotion
     end
 
     def pageViewController(pageview, viewControllerBeforeViewController:screen)
-      puts "getting before"
-      puts @pageview_screens
       destination_screen_for_screen(screen, :previous)
     end
 
     def pageViewController(pageview, viewControllerAfterViewController:screen)
-      p "getting after"
-      puts @pageview_screens.to_s
       destination_screen_for_screen(screen, :next)
     end
 
@@ -99,4 +95,3 @@ module ProMotion
     end
   end
 end
-

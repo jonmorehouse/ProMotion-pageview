@@ -1,9 +1,19 @@
 module ProMotion
   class DynamicPageView < PageView
 
-    #@@options << :cache_size
-    #register_options
+    register_options :cache_size
 
+    def screen_for_index(index)
+
+    end
+
+    def next_index(index)
+
+    end
+
+    def previous_index(index)
+
+    end
 
   end
 end
