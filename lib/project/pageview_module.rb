@@ -3,7 +3,6 @@ module ProMotion
 
     def self.included(base)
       base.extend(ClassMethods)
-      base.extend(InstanceMethods)
     end
 
     module ClassMethods
@@ -45,44 +44,58 @@ module ProMotion
           end
         end
       end
-
-      def register_store
-        [:indexes, :screens].each do |attr|
-          eigenclass.class_eval { attr_accessor attr }
-        end
-        @index = []
-        @screens = {}
-      end
     end
 
-    module InstanceMethods
+    def go_to_index(index, opts = {})
+      set_screens(screen_for_index(index), opts)
+    end
 
-      def presentationCountForPageViewController(pageview)
-        return 0 unless self.class.show_dots
-        self.class.total_screens || self.class.indexes.length
-      end
+    def convert_index(index)
+      return index if index.kind_of?(Integer)
 
-      def presentationIndexForPageViewController(pageview)
-        return @indexes[@current_index].object_id if @current_index
+      self.respond_to?(:integer_from_index) ? integer_from_index(index) : self.class.indexes.index(index)
+    end
 
-        convert_index(@opts[:default_index])
-      end
+    def set_screens(screen, opts = {})
+      opts = @opts.merge(opts)
+      @pageview_screens ||= []
+      @pageview_screens << screen
+      setViewControllers(@pageview_screens, direction: opts[:direction], animated: opts[:animated], completion: opts[:completion])
+    end
 
-      def go_to_index(index, opts = {})
-        set_screens(screen_for_index(index), opts)
-      end
+    def destination_screen_for_screen(screen, direction)
 
-      def convert_index(index)
-        return index if index.kind_of?(Integer)
+      current_index = @indexes[screen.object_id]
+      return nil unless current_index
 
-        self.respond_to?(:integer_from_index) ? integer_from_index(index) : self.class.indexes.index(index)
-      end
+      method_name = screen_delegate.respond_to?("#{direction}_index") ? "#{direction}_index" : direction
+      index = screen_delegate.send(method_name, current_index)
+      return nil unless index
+      
+      screen_for_index(index)
+    end
 
-      def set_screens(screen, opts = {})
-        opts = @opts.merge(opts)
-        setViewControllers([screen], direction: opts[:direction], animated: opts[:animated], completion: opts[:completion])
-      end
+    def pageViewController(pageview, viewControllerBeforeViewController:screen)
+      puts "getting before"
+      puts @pageview_screens
+      destination_screen_for_screen(screen, :previous)
+    end
 
+    def pageViewController(pageview, viewControllerAfterViewController:screen)
+      p "getting after"
+      puts @pageview_screens.to_s
+      destination_screen_for_screen(screen, :next)
+    end
+
+    def presentationCountForPageViewController(pageview)
+      return 0 unless self.class.show_dots
+      self.class.total_screens || self.class.indexes.length
+    end
+
+    def presentationIndexForPageViewController(pageview)
+      return @indexes[@current_index].object_id if @current_index
+
+      convert_index(@opts[:default_index])
     end
   end
 end

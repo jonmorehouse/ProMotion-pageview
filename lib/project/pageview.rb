@@ -4,6 +4,7 @@ module ProMotion
     include PageViewModule
 
     attr_accessor :opts
+    attr_accessor :screen_delegate
         
     # NOTE declare settings / defaults for the three settings needed to configure pageview
     @@map = {
@@ -31,10 +32,14 @@ module ProMotion
       :default_index => 0,
     }
 
+    class << self
+      attr_accessor :indexes
+      attr_accessor :screens
+    end
+
     # NOTE set up class
     register_options
     register_map
-    register_store
 
     def self.new(attrs = {})
       s = self.alloc
@@ -46,9 +51,10 @@ module ProMotion
       end
 
       s.opts = opts
-      s.screen_init(attrs)
       s.initWithTransitionStyle(opts[:transition], navigationOrientation: opts[:orientation], options:opts[:options])
       s.set_screens(s.screen_for_index(opts[:default_index]))
+      s.screen_init(attrs)
+      s.screen_delegate = opts[:screen_delegate] || s
       s.dataSource = s
       s.delegate = s
 

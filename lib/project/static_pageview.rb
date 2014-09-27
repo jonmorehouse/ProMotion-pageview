@@ -2,7 +2,6 @@ module ProMotion
   class StaticPageView < PageView
 
     def self.method_missing(method_name, obj_or_klass, opts = {})
-
       @screens ||= {}
       @indexes ||= []
 
@@ -20,7 +19,6 @@ module ProMotion
 
     def screen_for_index(index)
 
-      # NOTE normalize
       index = self.class.indexes.index(index) unless index.kind_of?(Integer)
       screen_name = self.class.indexes[index]
       return if screen_name.nil?
@@ -30,12 +28,21 @@ module ProMotion
 
       opts = self.class.screens[screen_name]
       screen = @screens[screen_name] || opts[:object] || opts[:klass].new(opts[:opts])
-      
+      screen = screen.navigationController || screen
+
       @screens[screen_name] = screen
       @indexes[screen.object_id] = index
 
-      screen.navigationController || screen
+      screen
     end
 
+    def next_index(index)
+      self.class.indexes[index + 1]
+    end
+    
+    def previous_index(index)
+      return nil unless index > 0
+      self.class.indexes[index - 1]
+    end
   end
 end
