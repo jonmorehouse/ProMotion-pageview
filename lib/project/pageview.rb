@@ -4,7 +4,7 @@ module ProMotion
     include PageViewModule
 
     attr_accessor :opts
-
+        
     # NOTE declare settings / defaults for the three settings needed to configure pageview
     @@map = {
       :transition => {
@@ -31,41 +31,54 @@ module ProMotion
       :default_index => 0,
     }
 
-    class << self
-      attr_accessor :indexes
-      attr_accessor :screens
+    def self.eigenclass
+      class << self; self; end
+    end
 
-      @@map.keys.flatten.each do |key|
-        attr_accessor key
+    # NOTE register the map based variables and their setter/getters
+    def self.register_map(map)
+      eigenclass.class_eval do
+        map.keys.each do |key|
+          attr_accessor key
 
-        define_method("#{key}=") do |arg|
-          value = @@map[key][arg] || arg
-          instance_variable_set("@#{key}", value)
-        end
+          define_method("#{key}=") do |arg|
+            value = @@map[key][arg] || arg
+            instance_variable_set("@#{key}", value)
+          end
 
-        define_method("#{key}") do |*args|
-          return send("#{key}=", *args) unless args.empty?
-          instance_variable_get("@#{key}") || @@map[key][:default]
-        end
-      end
-
-      @@available_options.each do |key|
-        attr_accessor key
-
-        define_method(key) do |*args|
-          return instance_variable_set("@#{key}", args.first) unless args.empty?
-          instance_variable_get("@#{key}") || @@defaults[key]
+          define_method("#{key}") do |*args|
+            return send("#{key}=", *args) unless args.empty?
+            instance_variable_get("@#{key}") || @@map[key][:default]
+          end
         end
       end
     end
 
-    def self.indexes
-      @indexes ||= []
+    def self.register_options(options)
+      eigenclass.class_eval do
+        options.each do |key|
+          attr_accessor key
+
+          define_method(key) do |*args|
+            return instance_variable_set("@#{key}", args.first) unless args.empty?
+            instance_variable_get("@#{key}") || @@defaults[key]
+          end
+        end
+      end
     end
 
-    def self.screens
-      @screens ||= {}
+    def self.register_store
+      [:indexes, :screens].each do |attr|
+        eigenclass.class_eval { attr_accessor attr }
+      end
+      @index = []
+      @screens = {}
     end
+
+    register_options(@@available_options)
+    register_map(@@map)
+    register_store
+
 
     def self.new(attrs = {})
       s = self.alloc
