@@ -10,7 +10,7 @@ module ProMotion
     end
 
     def presentationCountForPageViewController(pageview)
-      return presentation_screen_index if respond_to?(:presentation_screen_index)
+      return presentation_screen_count if respond_to?(:presentation_screen_count)
       0
     end
 
@@ -19,18 +19,17 @@ module ProMotion
       0
     end
 
-    def pageViewController(pageview, willTransitionToViewControllers:controllers)
-      puts controllers.to_s
-      
+    def pageViewController(pageview, willTransitionToViewControllers:screens)
+      will_transition(screens) if respond_to?(:will_transition) 
     end
 
     def pageViewController(pageview, didFinishAnimating:finished_animating, previousViewControllers:previous, transitionCompleted: transition_completed)
-
+      did_transition(screen) if respond_to?(:did_transition)
     end
 
     def pageViewController(pageview, spineLocationForInterfaceOrientation:spine)
-
-      puts "spine location"
+      # NOTE no use for this now
+      spine_location(spine) if respond_to?(:spine_location)
     end
   end
 end

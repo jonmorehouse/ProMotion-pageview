@@ -94,5 +94,14 @@ module ProMotion
       convert_index(@opts[:default_index])
     end
 
+    def will_transition(screens)
+      screens.each do |screen|
+        screen.will_transition if screen.respond_to?(:will_transition)
+      end
+    end
+
+    def did_transition(screen)
+      screen.did_transition if screen.respond_to?(:did_transition)
+    end
   end
 end
