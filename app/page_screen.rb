@@ -2,6 +2,8 @@ class Page < PM::Screen
 
   def on_load(opts = {})
 
+    puts "CREATED"
+
   end
 
   def did_transition

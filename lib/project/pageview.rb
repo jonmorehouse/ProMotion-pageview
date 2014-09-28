@@ -54,7 +54,7 @@ module ProMotion
 
       s.opts = opts
       s.initWithTransitionStyle(opts[:transition], navigationOrientation: opts[:orientation], options:opts[:options])
-      s.set_screens(s.screen_for_index(s.default_index))
+      s.set_screens(s.screen_for_index(*s.default_index))
       s.screen_init(attrs)
       s.screen_delegate = opts[:screen_delegate] || s
       s.dataSource = s

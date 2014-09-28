@@ -80,10 +80,12 @@ module ProMotion
     end
 
     def previous_screen(screen)
+      return send(:previous, screen) if respond_to?(:previous) 
       destination_screen_for_screen(screen, :previous)
     end
 
     def next_screen(screen)
+      return send(:next, screen) if respond_to?(:next)
       destination_screen_for_screen(screen, :next)
     end
 

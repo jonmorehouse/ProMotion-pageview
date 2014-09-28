@@ -6,20 +6,19 @@ class PageDelegate
   end
 
   def default
-    #@default_called = true
-    #@default_value = 0
-    0
+    [5, {title: "default", nav_bar: true}]
   end
 
   def next(index)
-    puts "CALLED"
     @next_called = true
     @next_value = index + 1
+
+    [@next_value, {title: @next_value.to_s, nav_bar: true}]
   end
 
   def previous(index)
-    puts "CALLED"
     @previous_called = true
-    @previous_called = index > 0 ? index - 1 : nil
+    @previous_value = index > 0 ? index - 1 : nil
+    [@previous_value, {title: @previous_value.to_s, nav_bar: true}]
   end
 end
