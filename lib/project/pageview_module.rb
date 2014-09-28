@@ -71,7 +71,7 @@ module ProMotion
       method_name = screen_delegate.respond_to?("#{direction}_index") ? "#{direction}_index" : direction
       index = screen_delegate.send(method_name, current_index)
       return nil unless index
-      
+
       screen_for_index(index)
     end
 

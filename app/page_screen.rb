@@ -4,5 +4,15 @@ class Page < PM::Screen
 
   end
 
+  def did_transition
+
+    puts "did transition"
+  end
+
+  def will_transition
+
+    puts "will transition"
+  end
+
 
 end

@@ -20,10 +20,10 @@ module ProMotion
     end
 
     def pageViewController(pageview, willTransitionToViewControllers:screens)
-      will_transition(screens) if respond_to?(:will_transition) 
+      will_transition(screens) if respond_to?(:will_transition)
     end
 
-    def pageViewController(pageview, didFinishAnimating:finished_animating, previousViewControllers:previous, transitionCompleted: transition_completed)
+    def pageViewController(pageview, didFinishAnimating:finished_animating, previousViewControllers:screen, transitionCompleted: transition_completed)
       did_transition(screen) if respond_to?(:did_transition)
     end
 
