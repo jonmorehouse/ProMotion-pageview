@@ -1,17 +1,44 @@
 module ProMotion
   class DynamicPageView < PageView
 
-    register_options :cache_size
+    @@dynamic_options = [:cache, :cache_size, :page_delegate, :page]
+    register_options @@dynamic_options
 
-    def screen_for_index(index)
+    def self.new(attrs = {})
+      attrs[:option_keys] = @@dynamic_options
+      s = super(attrs)
+      s 
+    end
+
+    def screen_for_index(index, opts = {})
+
+      PM::Screen.new
+    end
+
+    def default_index
+      index = nil
+      [:first_index, :first, :default, :default_index].inject(index) do |index, method_name|
+        index = page_delegate.send(method_name) if page_delegate.respond_to?(method_name)
+      end
+
+      index || super
+    end
+
+    def page_delegate
+      @page_delegate ||= begin
+        klass_or_obj = opts.delete(:page_delegate)
+        return self unless klass_or_obj
+        klass_or_obj.kind_of?(Class) ? klass_or_obj.new : klass_or_obj
+      end
+    end
+
+    def cached_screen(index)
+      # NOTE check if the screen is cached
 
     end
 
-    def next_index(index)
-
-    end
-
-    def previous_index(index)
+    def cleanup_cache(index)
+      # NOTE keep cache within the proper size
 
     end
 

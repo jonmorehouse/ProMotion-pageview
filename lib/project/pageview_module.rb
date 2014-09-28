@@ -34,7 +34,7 @@ module ProMotion
       def register_options(*options)
         options = options.empty? ? self.class_variable_get("@@options") : options
         eigenclass.class_eval do
-          options.each do |key|
+          options.flatten.each do |key|
             attr_accessor key
 
             define_method(key) do |*args|
@@ -44,6 +44,10 @@ module ProMotion
           end
         end
       end
+    end
+
+    def default_index
+      opts[:default_index] || 0
     end
 
     def go_to_index(index, opts = {})

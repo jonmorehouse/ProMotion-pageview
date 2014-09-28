@@ -1,14 +1,13 @@
 class DynamicPageView < PM::DynamicPageView
 
-  def on_load
+  cache true
+  cache_size 5
+  page_delegate PageDelegate
+  page Page
 
-  end
+end
 
-  def screen_for_index(index)
-    Page.new
-  end
-
-
+class DefaultDynamicPageView < PM::DynamicPageView
 
 
 end

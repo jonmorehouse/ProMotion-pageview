@@ -44,8 +44,9 @@ module ProMotion
 
     def self.new(attrs = {})
       s = self.alloc
+      attrs[:option_keys] ||= []
 
-      opts = [@@map.keys + @@options].flatten.inject({}) do |hash, key|
+      opts = [@@map.keys + @@options + attrs[:option_keys]].flatten.inject({}) do |hash, key|
         value = attrs.delete(key) || self.send(key)
         hash[key] = value unless value.nil?
         hash
@@ -53,7 +54,7 @@ module ProMotion
 
       s.opts = opts
       s.initWithTransitionStyle(opts[:transition], navigationOrientation: opts[:orientation], options:opts[:options])
-      s.set_screens(s.screen_for_index(opts[:default_index]))
+      s.set_screens(s.screen_for_index(s.default_index))
       s.screen_init(attrs)
       s.screen_delegate = opts[:screen_delegate] || s
       s.dataSource = s
