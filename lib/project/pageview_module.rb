@@ -75,27 +75,24 @@ module ProMotion
       screen_for_index(index)
     end
 
-    def pageViewController(pageview, viewControllerBeforeViewController:screen)
+    def previous_screen(screen)
       destination_screen_for_screen(screen, :previous)
     end
 
-    def pageViewController(pageview, viewControllerAfterViewController:screen)
+    def next_screen(screen)
       destination_screen_for_screen(screen, :next)
     end
 
-    def presentationCountForPageViewController(pageview)
+    def presentation_screen_count
       return 0 unless self.class.show_dots
       self.class.total_screens || self.class.indexes.length
     end
 
-    def presentationIndexForPageViewController(pageview)
+    def presentation_screen_index
       return @indexes[@current_index].object_id if @current_index
 
       convert_index(@opts[:default_index])
     end
-
-
-
 
   end
 end

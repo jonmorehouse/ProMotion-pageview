@@ -1,6 +1,7 @@
 module ProMotion
   class PageView < UIPageViewController
     include ScreenModule
+    include PageViewDelegatesModule
     include PageViewModule
 
     attr_accessor :opts
