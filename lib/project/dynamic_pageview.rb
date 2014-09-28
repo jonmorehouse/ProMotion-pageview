@@ -16,8 +16,10 @@ module ProMotion
     end
 
     def default_index
+
       index = nil
       [:first_index, :first, :default, :default_index].find do |method_name|
+        next if page_delegate == self and method_name == :default_index
         index = page_delegate.public_send(method_name) if page_delegate.respond_to?(method_name)
       end
 
@@ -26,10 +28,11 @@ module ProMotion
 
     def page_delegate
       @page_delegate ||= begin
-        klass_or_obj = opts.delete(:page_delegate)
+        klass_or_obj = opts[:page_delegate]
         return self unless klass_or_obj
         klass_or_obj.kind_of?(Class) ? klass_or_obj.new : klass_or_obj
       end
+
     end
 
     def cached_screen(index)

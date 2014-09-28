@@ -6,8 +6,9 @@ class PageDelegate
   end
 
   def default
-    @default_called = true
-    @default_value = 0
+    #@default_called = true
+    #@default_value = 0
+    0
   end
 
   def next(index)

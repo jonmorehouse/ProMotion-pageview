@@ -30,6 +30,7 @@ describe ProMotion::DynamicPageView do
 
     it "lazily creates a page_delegate if a class type is passed" do
       @obj.page_delegate.should.be.kind_of PageDelegate
+      @obj.page_delegate.should.be.kind_of PageDelegate
     end
 
     it "uses self if the page_delegate class is not specified" do
@@ -37,7 +38,6 @@ describe ProMotion::DynamicPageView do
     end
     
     it "uses the page_delegate to the return the correct indexes" do
-      #@obj.screen_for_index(:default)
       pending
     end
 
