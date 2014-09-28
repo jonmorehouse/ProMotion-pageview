@@ -75,7 +75,7 @@ end
 ~~~~
 
 #### Options
-###### page_delegate
+##### page_delegate
 
 By setting a page_delegate class or object, the DynamicPageView will delegate to this object to get the next/previous index. You can optionally return an attributes hash to be passed on initialize to the new page.
 
@@ -103,34 +103,34 @@ end
 
 ~~~
 
-###### page
+##### page
 
 The class method allows you to set screen page for new screens to be allocated with
 
-###### cache 
+##### cache 
 
 Allows you to set whether or not screens will be cached internally. By default the PageViewController will cache a few screens on its internal stack, but in theory this page will cache as many screens as you like.
 
-###### cache_size
+##### cache_size
 
 Sets maximum length for cache 
 
 ### Global Options
 
-###### show_dots
+##### show_dots
 
 Sets whether or not to show presentation view on the controller. Default: ```false```
 
-###### direction
+##### direction
 
 Sets [direction](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIPageViewControllerClassReferenceClassRef/index.html#//apple_ref/c/tdef/UIPageViewControllerNavigationDirection) of paging on the UIPageViewController. Options: ```:forward, :backward, :reverse```. Default: ```:forward```
 
-###### orientation
+##### orientation
 
 Sets [orientation](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIPageViewControllerClassReferenceClassRef/index.html#//apple_ref/c/tdef/UIPageViewControllerNavigationDirection) of the pageview. 
 Options: ```:horizontal, :vertical ``` Default: ```:horizontal```
 
-###### transition
+##### transition
 
 Sets [transition](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIPageViewControllerClassReferenceClassRef/index.html#//apple_ref/c/tdef/UIPageViewControllerNavigationDirection) style of the pageviewcontroller. Options: ```:page_curl, :page, :scroll```. Default: ```:scroll```
 
