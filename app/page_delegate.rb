@@ -11,11 +11,13 @@ class PageDelegate
   end
 
   def next(index)
+    puts "CALLED"
     @next_called = true
     @next_value = index + 1
   end
 
   def previous(index)
+    puts "CALLED"
     @previous_called = true
     @previous_called = index > 0 ? index - 1 : nil
   end

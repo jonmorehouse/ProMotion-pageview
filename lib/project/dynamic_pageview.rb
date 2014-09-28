@@ -17,8 +17,8 @@ module ProMotion
 
     def default_index
       index = nil
-      [:first_index, :first, :default, :default_index].inject(index) do |index, method_name|
-        index = page_delegate.send(method_name) if page_delegate.respond_to?(method_name)
+      [:first_index, :first, :default, :default_index].find do |method_name|
+        index = page_delegate.public_send(method_name) if page_delegate.respond_to?(method_name)
       end
 
       index || super
